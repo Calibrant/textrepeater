@@ -1,0 +1,16 @@
+{
+    "main_title": "Texto do repetidor",
+    "app_title": "Texto de repetição",
+    "snackbar_text": "Texto copiado",
+    "label_text1": "Introduza o seu texto",
+    "label_text2": "Quantas vezes repete o texto?",
+    "checkbox_title": "Criar nova linha",
+    "text_max1000": "máximo de 1000 linhas",
+    "elevated_btn_generate": "Gerar texto",
+    "elevated_btn_reset": "Repor",
+    "tooltip_copy": "Copiar",
+    "tooltip_share": "Partilhar",
+    "drawer_header": "Texto do repetidor",
+    "drawer_title_rate": "Classificar esta aplicação",
+    "drawer_title_privacy": "Política de privacidade"
+}

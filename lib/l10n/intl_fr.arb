@@ -1,0 +1,24 @@
+{
+    "main_title": "Ajouter du texte, répéter, copier et partager!",
+    "app_title": "Ajouter du texte, répéter, copier et partager!",
+    "snackbar_text": "Texte copié",
+    "label_text1": "Entrez votre texte",
+    "label_text2": "Combien de fois répéter le texte?",
+    "checkbox_title": "Créer une nouvelle ligne",
+    "text_max1000": "1000 lignes maximum",
+    "elevated_btn_generate": "Générer du texte",
+    "elevated_btn_reset": "Reset",
+    "tooltip_copy": "Copier",
+    "tooltip_share": "Partager",
+    "drawer_header": "Text repeater app",
+    "drawer_title_rate": "Notez cette application",
+    "drawer_title_privacy": "Politique de confidentialité",
+    "pageSettingsInputLanguage": "{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}",
+    "@pageSettingsInputLanguage": {
+        "placeholders": {
+            "locale": {
+                "type": "String"
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "main_title": "Texto repetidor",
+    "app_title": "Repetir texto",
+    "snackbar_text": "Texto copiado",
+    "label_text1": "Ingresa tu texto",
+    "label_text2": "¿Cuántas veces repites el texto?",
+    "checkbox_title": "Crear nueva línea",
+    "text_max1000": "máximo 1000 líneas",
+    "elevated_btn_generate": "Generar Texto",
+    "elevated_btn_reset": "Restablecer",
+    "tooltip_copy": "Copiar",
+    "tooltip_share": "Compartir",
+    "pageSettingsInputLanguage": "{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}",
+    "@pageSettingsInputLanguage": {
+        "placeholders": {
+            "locale": {
+                "type": "String"
+            }
+        }
+    }
+}

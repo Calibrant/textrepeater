@@ -1,0 +1,4 @@
+#Sun Dec 11 14:13:09 UZT 2022
+base.0=C\:\\Users\\User\\Documents\\MyFl\\text_repeater\\android\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

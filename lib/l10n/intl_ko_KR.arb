@@ -1,0 +1,16 @@
+{
+    "main_title": "리피터 텍스트",
+    "app_title": "반복 텍스트",
+    "snackbar_text": "복사된 텍스트",
+    "label_text1": "텍스트 입력",
+    "label_text2": "텍스트를 몇 번 반복합니까?",
+    "checkbox_title": "새 줄 만들기",
+    "text_max1000": "최대 1000줄",
+    "elevated_btn_generate": "텍스트 생성",
+    "Elevated_BTN_Reset": "리셋",
+    "tooltip_copy": "복사",
+    "tooltip_share": "공유",
+    "drawer_header": "리피터 텍스트",
+    "drawer_title_rate": "이 앱 평가",
+    "drawer_title_privacy": "개인정보 보호정책"
+}

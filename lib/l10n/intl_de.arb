@@ -1,0 +1,24 @@
+{
+    "main_title": "Wiederholer-Text",
+    "app_ttle": "Wiederholungstext",
+    "snackbar_text": "Kopierter Text",
+    "label_text1": "Geben Sie Ihren Text ein",
+    "label_text2": "Wie oft soll der Text wiederholt werden?",
+    "checkbox_title": "Neue Zeile erstellen",
+    "text_max1000": "max 1000 Zeilen",
+    "elevated_btn_generate": "Text gener.",
+    "elevated_btn_reset": "Zurücksetzen",
+    "tooltip_copy": "Kopieren",
+    "tooltip_share": "Teilen",
+    "drawer_header": "Wiederholungstext",
+    "drawer_title_rate": "Diese Anwendung bewerten",
+    "drawer_title_privacy": "Datenschutzrichtlinie",
+    "pageSettingsInputLanguage": "{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}",
+    "@pageSettingsInputLanguage": {
+        "placeholders": {
+            "locale": {
+                "type": "String"
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "main_title": "Texto repetidor",
+    "app_title": "Repetir texto",
+    "snackbar_text": "Texto copiado",
+    "label_text1": "Ingresa tu texto",
+    "label_text2": "¿Cuántas veces repites el texto?",
+    "checkbox_title": "Crear nueva línea",
+    "text_max1000": "máximo 1000 líneas",
+    "elevated_btn_generate": "Generar Texto",
+    "elevated_btn_reset": "Restablecer",
+    "tooltip_copy": "Copiar",
+    "tooltip_share": "Compartir"
+}
