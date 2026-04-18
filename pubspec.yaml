@@ -22,6 +22,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   url_launcher: ^6.3.0
   google_mobile_ads: ^7.0.0
+  in_app_purchase: ^3.2.3
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:text_repeater/admob/ad_helper.dart';
 import 'package:text_repeater/checkbox_newline.dart';
@@ -15,6 +15,63 @@ import 'package:text_repeater/numerical_range_formatter.dart';
 import 'package:text_repeater/popupmenu.dart';
 import 'package:text_repeater/themeextension_mycolor.dart';
 
+// ═══════════════════════════════════════════════════════════════════════════
+// 🎯 PREMIUM MANAGER (временно без покупок, только флаг для разработки)
+// ═══════════════════════════════════════════════════════════════════════════
+class PremiumManager {
+  static final PremiumManager instance = PremiumManager._internal();
+  PremiumManager._internal();
+
+  // ⚠️ ВРЕМЕННО: для теста можно поставить true, чтобы увидеть, как будет выглядеть премиум
+  // В релизе — всегда false, пока пользователь не купит
+  bool _isPremium = false;
+  bool get isPremium => _isPremium;
+
+  // 🔧 TODO: После получения ID товара из Google Play Console:
+  // 1. Заменить 'ad_free_unlimited' на реальный ID
+  // 2. Раскомментировать код в init() и buyPremium()
+  static const String _premiumProductId = 'ad_free_unlimited';
+
+  Future<void> init() async {
+    // TODO: РАСКОММЕНТИРОВАТЬ после создания товара в Google Play Console
+    // final prefs = await SharedPreferences.getInstance();
+    // _isPremium = prefs.getBool('is_premium') ?? false;
+    //
+    // final purchaseStream = InAppPurchase.instance.purchaseStream;
+    // purchaseStream.listen((purchases) {
+    //   _handlePurchaseUpdates(purchases);
+    // });
+  }
+
+  Future<void> buyPremium() async {
+    // TODO: РАСКОММЕНТИРОВАТЬ после создания товара
+    // final productDetails = await InAppPurchase.instance.queryProductDetails({_premiumProductId});
+    // if (productDetails.productDetails.isEmpty) return;
+    // final purchaseParam = PurchaseParam(productDetails: productDetails.productDetails.first);
+    // await InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
+  }
+
+  void _handlePurchaseUpdates(List<PurchaseDetails> purchases) {
+    // TODO: РАСКОММЕНТИРОВАть после создания товара
+    // for (final purchase in purchases) {
+    //   if (purchase.status == PurchaseStatus.purchased && purchase.productID == _premiumProductId) {
+    //     _isPremium = true;
+    //     SharedPreferences.getInstance().then((prefs) {
+    //       prefs.setBool('is_premium', true);
+    //     });
+    //   }
+    // }
+  }
+
+  // Временный метод для тестирования премиум UI (удалить перед релизом)
+  void debugSetPremium(bool value) {
+    _isPremium = value;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 📱 ОСНОВНОЙ КЛАСС ПРИЛОЖЕНИЯ
+// ═══════════════════════════════════════════════════════════════════════════
 class TextRepeater extends StatefulWidget {
   const TextRepeater({super.key});
 
@@ -50,8 +107,17 @@ class _TextRepeaterState extends State<TextRepeater> {
   Timer? timerDebouncingClicks;
   final List<String> listShareGeneratedText = <String>[];
 
+  // ==================== PREMIUM ====================
+  bool get _isPremium => PremiumManager.instance.isPremium;
+
+  // Максимальное количество строк (зависит от премиума)
+  int get _maxLines => _isPremium ? 50000 : 2000;
+
   // ==================== ЗАГРУЗКА РЕКЛАМЫ ====================
   void _loadInterstitialAd() {
+    // Если премиум — не загружаем рекламу вообще
+    if (_isPremium) return;
+
     InterstitialAd.load(
       adUnitId: AdHelper.interstitialAdUnitId,
       request: const AdRequest(),
@@ -62,7 +128,7 @@ class _TextRepeaterState extends State<TextRepeater> {
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
-              _loadInterstitialAd(); // preload next
+              _loadInterstitialAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
               debugPrint('Interstitial failed to show: $error');
@@ -80,7 +146,8 @@ class _TextRepeaterState extends State<TextRepeater> {
   }
 
   void _loadMainBannerAd() {
-    if (_isAdLoading || _mainBannerAd != null) return;
+    // Если премиум — не загружаем баннер
+    if (_isPremium || _isAdLoading || _mainBannerAd != null) return;
 
     _isAdLoading = true;
 
@@ -108,6 +175,7 @@ class _TextRepeaterState extends State<TextRepeater> {
   }
 
   void _showInterstitialIfNeeded() {
+    if (_isPremium) return; // Премиум — рекламы нет
     _generateCount++;
     if (_generateCount % 3 == 0 && _interstitialAd != null) {
       _interstitialAd!.show();
@@ -129,10 +197,11 @@ class _TextRepeaterState extends State<TextRepeater> {
     sharedIconBtnSwitchState = false;
     elevatedGenerateTextBtnSwitchState = false;
 
-    // Загружаем межстраничку сразу
+    // Инициализация премиум-менеджера
+    PremiumManager.instance.init();
+
     _loadInterstitialAd();
 
-    // Загружаем баннер ПОСЛЕ первого кадра (чтобы не тормозить клавиатуру и первый build)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadMainBannerAd();
     });
@@ -163,10 +232,11 @@ class _TextRepeaterState extends State<TextRepeater> {
     super.dispose();
   }
 
-  // ==================== BUILD BANNER (с фиксированной высотой) ====================
+  // ==================== BUILD BANNER ====================
   Widget _buildBanner() {
+    if (_isPremium) return const SizedBox.shrink(); // Премиум — нет баннера
     if (!_isMainBannerAdLoaded || _mainBannerAd == null) {
-      return const SizedBox(height: 52); // резервируем место
+      return const SizedBox(height: 52);
     }
     return SizedBox(
       height: _mainBannerAd!.size.height.toDouble(),
@@ -174,7 +244,7 @@ class _TextRepeaterState extends State<TextRepeater> {
     );
   }
 
-  // ==================== SHARE & COPY (оставил твои улучшенные версии) ====================
+  // ==================== SHARE & COPY ====================
   String _buildShareText() {
     final String inputText = controller.text.trim();
     if (inputText.isEmpty || counter <= 0) return '';
@@ -243,7 +313,7 @@ class _TextRepeaterState extends State<TextRepeater> {
     }
 
     try {
-      await Share.share(str);
+      await SharePlus.instance.share(ShareParams(text: str));
     } catch (e) {
       debugPrint('Share error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -256,7 +326,7 @@ class _TextRepeaterState extends State<TextRepeater> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalizations.of(context).snackbar_empty_text ??
-            'Нечего поделиться'),
+            'Нечем поделиться, гуляй Вася'),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -269,6 +339,82 @@ class _TextRepeaterState extends State<TextRepeater> {
     counter = 0;
   }
 
+  // ==================== PREMIUM BUTTON ====================
+  void _showPremiumDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.workspace_premium, color: Colors.amber, size: 28),
+            SizedBox(width: 8),
+            Text('Text Repeater PRO'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Что вы получите:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            const Row(children: [
+              Icon(Icons.block, size: 18),
+              SizedBox(width: 8),
+              Text('Полное удаление рекламы')
+            ]),
+            const SizedBox(height: 4),
+            const Row(children: [
+              Icon(Icons.all_inclusive, size: 18),
+              SizedBox(width: 8),
+              Text('До 50 000 повторений за раз')
+            ]),
+            const SizedBox(height: 4),
+            const Row(children: [
+              Icon(Icons.support_agent, size: 18),
+              SizedBox(width: 8),
+              Text('Приоритетная поддержка')
+            ]),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.amber.shade50,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                '🔥 Одноразовая покупка — навсегда!',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Позже'),
+          ),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+              // TODO: РАСКОММЕНТИРОВАТЬ после создания товара
+              // PremiumManager.instance.buyPremium();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                      'Покупка будет доступна после обновления приложения'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            icon: const Icon(Icons.lock_open),
+            label: const Text('Купить PRO — \$3.99'),
+          ),
+        ],
+      ),
+    );
+  }
+
   // ==================== BUILD ====================
   @override
   Widget build(BuildContext context) {
@@ -278,8 +424,7 @@ class _TextRepeaterState extends State<TextRepeater> {
         if (isOpened) {
           setState(() => _isMainBannerAdLoaded = false);
         } else {
-          setState(() => _isMainBannerAdLoaded =
-              true); // просто показываем уже загруженный баннер
+          setState(() => _isMainBannerAdLoaded = true);
         }
       },
       backgroundColor: context.theme.colorScheme.background,
@@ -290,9 +435,16 @@ class _TextRepeaterState extends State<TextRepeater> {
           softWrap: true,
           maxLines: 2,
         ),
-        actions: const [
-          LocaleLanguageSwitcherWidget(),
-          PopupMenu(),
+        actions: [
+          // 🎯 КНОПКА PREMIUM (КОРОНА)
+          if (!_isPremium)
+            IconButton(
+              icon: const Icon(Icons.workspace_premium, color: Colors.amber),
+              tooltip: 'Text Repeater PRO — без рекламы',
+              onPressed: _showPremiumDialog,
+            ),
+          const LocaleLanguageSwitcherWidget(),
+          const PopupMenu(),
         ],
       ),
       body: SafeArea(
@@ -324,9 +476,9 @@ class _TextRepeaterState extends State<TextRepeater> {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0}')),
                   FilteringTextInputFormatter.deny(RegExp('[. ,-]')),
-                  LengthLimitingTextInputFormatter(4),
+                  LengthLimitingTextInputFormatter(5), // 50000 -> 5 символов
                   NumericalRangeFormatter(
-                      min: 1, max: 2000), // можешь поднять до 4000-5000
+                      min: 1, max: _maxLines), // динамический лимит!
                 ],
                 style: Styles.textTheme(context).bodyLarge,
               ),
@@ -343,7 +495,6 @@ class _TextRepeaterState extends State<TextRepeater> {
                       value: checkboxSwitchState,
                       onChanged: (bool newLine) {
                         setState(() {
-                          timeDilation = newLine ? 2.5 : 1.0;
                           checkboxSwitchState = newLine;
                           listShareGeneratedText.clear();
                         });
@@ -357,7 +508,7 @@ class _TextRepeaterState extends State<TextRepeater> {
                     ),
                     padding: const EdgeInsets.all(4),
                     child: Text(
-                      AppLocalizations.of(context).text_max1000,
+                      _isPremium ? 'До 50 000' : 'До ${_maxLines}',
                       style: Styles.textTheme(context).bodySmall,
                     ),
                   ),
@@ -396,7 +547,6 @@ class _TextRepeaterState extends State<TextRepeater> {
                           sharedIconBtnSwitchState = false;
                           elevatedGenerateTextBtnSwitchState = false;
                           checkboxSwitchState = false;
-                          timeDilation = 1.0;
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -435,7 +585,7 @@ class _TextRepeaterState extends State<TextRepeater> {
                       ? ListView.builder(
                           itemCount: counter,
                           addAutomaticKeepAlives: false,
-                          itemExtent: 28, // сильно ускоряет скролл
+                          itemExtent: 28,
                           itemBuilder: (context, index) {
                             final text = controller.text;
                             return checkboxSwitchState
