@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:text_repeater/l10n/app_localizations.dart';
 import 'package:text_repeater/main.dart';
 import 'package:text_repeater/text_repeater.dart';
 import 'repeater_text_app_core/constants.dart';
 import 'repeater_text_app_core/text_repeater_launch_url.dart';
-import 'generated/l10n.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -21,14 +21,14 @@ class CustomDrawer extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  S.of(context).drawer_header,
+                  AppLocalizations.of(context).drawer_header,
                   style: context.theme.textTheme.titleLarge!
                       .copyWith(color: Colors.white),
                 ),
               )),
           ListTile(
             leading: const Icon(Icons.touch_app, color: Colors.blue),
-            title: Text(S.of(context).drawer_title_rate), //thumb_up
+            title: Text(AppLocalizations.of(context).drawer_title_rate), //thumb_up
             onTap: () {
               const googlePlay = TextRepeaterLaunchUrl();
               googlePlay.openURL(AppConst.googlePlay);
@@ -36,7 +36,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.privacy_tip, color: Colors.blue),
-            title: Text(S.of(context).drawer_title_privacy),
+            title: Text(AppLocalizations.of(context).drawer_title_privacy),
             onTap: () {
               const prPolicy = TextRepeaterLaunchUrl();
               prPolicy.openURL(AppConst.prPolicy);

@@ -5,7 +5,7 @@
     "label_text1": "Digite seu texto",
     "label_text2": "Quantas vezes repetir o texto?",
     "checkbox_title": "Criar nova linha",
-    "text_max1000": "máximo de 1000 linhas",
+    "text_max1000": "máximo de 2000 linhas",
     "elevated_btn_generate": "Gerar texto",
     "elevated_btn_reset": "Redefinir",
     "tooltip_copy": "Copiar",

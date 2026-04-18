@@ -5,7 +5,7 @@
     "label_text1": "Введите текст",
     "label_text2": "Сколько раз повторить текст?",
     "checkbox_title": "Повторять с новой строки",
-    "text_max1000": "До 1000 раз",
+    "text_max1000": "До 2000 раз",
     "elevated_btn_generate": "Создать текст",
     "elevated_btn_reset": "Сброс",
     "tooltip_copy": "Копировать",

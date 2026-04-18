@@ -5,7 +5,7 @@
     "label_text1": "テキストを入力",
     "label_text2": "テキストを何回繰り返しますか？",
     "checkbox_title": "新しい行を作成",
-    "text_max1000": "最大1000行",
+    "text_max1000": "最大2000行",
     "elevated_btn_generate": "テキストの生成",
     "elevated_btn_reset": "リセット",
     "tooltip_copy": "コピー",

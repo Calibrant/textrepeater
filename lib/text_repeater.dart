@@ -9,7 +9,7 @@ import 'package:text_repeater/admob/ad_helper.dart';
 import 'package:text_repeater/checkbox_newline.dart';
 import 'package:text_repeater/core/Style/styles.dart';
 import 'package:text_repeater/custom_drawer.dart';
-import 'package:text_repeater/generated/l10n.dart';
+import 'package:text_repeater/l10n/app_localizations.dart';
 import 'package:text_repeater/language_switcher.dart';
 import 'package:text_repeater/numerical_range_formatter.dart';
 import 'package:text_repeater/popupmenu.dart';
@@ -17,7 +17,7 @@ import 'package:text_repeater/themeextension_mycolor.dart';
 
 class TextRepeater extends StatefulWidget {
   const TextRepeater({super.key});
-  //final String title;
+
   @override
   State<TextRepeater> createState() => _TextRepeaterState();
 }
@@ -31,53 +31,235 @@ class _TextRepeaterState extends State<TextRepeater> {
   late TextEditingController controller;
   late TextEditingController controller2;
 
-  late BannerAd _bottomBannerAd;
-  bool _isBottomBannerAdLoaded = false;
+  // ==================== БАННЕР ====================
+  BannerAd? _mainBannerAd;
+  bool _isMainBannerAdLoaded = false;
+  bool _isAdLoading = false;
 
+  // ==================== INTERSTITIAL ====================
+  InterstitialAd? _interstitialAd;
+  int _generateCount = 0;
+
+  // ==================== Логика приложения ====================
   int counter = 0;
-  final String lineBreakGeneratedText = '\n';
-  final List<String> listShareGeneratedText = <String>[];
   bool checkboxSwitchState = false;
-  late bool copytextIconBtnSwitchState;
-  Timer? timerDebouncingClicks;
-  late bool sharedIconBtnSwitchState;
-  bool elevatedGenerateTextBtnSwitchState = true;
-  final model = Styles();
+  bool copytextIconBtnSwitchState = false;
+  bool sharedIconBtnSwitchState = false;
+  bool elevatedGenerateTextBtnSwitchState = false;
 
-  void _createBottomBannerAd() {
-    _bottomBannerAd = BannerAd(
+  Timer? timerDebouncingClicks;
+  final List<String> listShareGeneratedText = <String>[];
+
+  // ==================== ЗАГРУЗКА РЕКЛАМЫ ====================
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          if (!mounted) return;
+          _interstitialAd = ad;
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              _loadInterstitialAd(); // preload next
+            },
+            onAdFailedToShowFullScreenContent: (ad, error) {
+              debugPrint('Interstitial failed to show: $error');
+              ad.dispose();
+              _loadInterstitialAd();
+            },
+          );
+        },
+        onAdFailedToLoad: (error) {
+          debugPrint('Interstitial failed to load: $error');
+          _interstitialAd = null;
+        },
+      ),
+    );
+  }
+
+  void _loadMainBannerAd() {
+    if (_isAdLoading || _mainBannerAd != null) return;
+
+    _isAdLoading = true;
+
+    _mainBannerAd = BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (_) {
+          if (!mounted) return;
           setState(() {
-            _isBottomBannerAdLoaded = true;
+            _isMainBannerAdLoaded = true;
+            _isAdLoading = false;
           });
         },
         onAdFailedToLoad: (ad, error) {
+          debugPrint('BannerAd failed to load: $error');
           ad.dispose();
+          _mainBannerAd = null;
+          _isAdLoading = false;
         },
       ),
     );
-    _bottomBannerAd.load();
+    _mainBannerAd?.load();
   }
 
+  void _showInterstitialIfNeeded() {
+    _generateCount++;
+    if (_generateCount % 3 == 0 && _interstitialAd != null) {
+      _interstitialAd!.show();
+    }
+  }
+
+  // ==================== LIFECYCLE ====================
   @override
   void initState() {
     super.initState();
+
     controller = TextEditingController();
     controller2 = TextEditingController();
-    timerDebouncingClicks?.cancel();
+
+    controller.addListener(_updateButtonState);
+    controller2.addListener(_updateButtonState);
+
     copytextIconBtnSwitchState = false;
     sharedIconBtnSwitchState = false;
     elevatedGenerateTextBtnSwitchState = false;
+
+    // Загружаем межстраничку сразу
+    _loadInterstitialAd();
+
+    // Загружаем баннер ПОСЛЕ первого кадра (чтобы не тормозить клавиатуру и первый build)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadMainBannerAd();
+    });
+  }
+
+  void _updateButtonState() {
+    final bool canGenerate =
+        controller.text.trim().isNotEmpty && controller2.text.trim().isNotEmpty;
+
+    if (elevatedGenerateTextBtnSwitchState != canGenerate) {
+      setState(() {
+        elevatedGenerateTextBtnSwitchState = canGenerate;
+        if (!canGenerate) {
+          copytextIconBtnSwitchState = false;
+          sharedIconBtnSwitchState = false;
+        }
+      });
+    }
   }
 
   @override
-  void didChangeDependencies() {
-    _createBottomBannerAd();
-    super.didChangeDependencies();
+  void dispose() {
+    _mainBannerAd?.dispose();
+    _interstitialAd?.dispose();
+    controller.dispose();
+    controller2.dispose();
+    timerDebouncingClicks?.cancel();
+    super.dispose();
+  }
+
+  // ==================== BUILD BANNER (с фиксированной высотой) ====================
+  Widget _buildBanner() {
+    if (!_isMainBannerAdLoaded || _mainBannerAd == null) {
+      return const SizedBox(height: 52); // резервируем место
+    }
+    return SizedBox(
+      height: _mainBannerAd!.size.height.toDouble(),
+      child: AdWidget(ad: _mainBannerAd!),
+    );
+  }
+
+  // ==================== SHARE & COPY (оставил твои улучшенные версии) ====================
+  String _buildShareText() {
+    final String inputText = controller.text.trim();
+    if (inputText.isEmpty || counter <= 0) return '';
+
+    final String separator = checkboxSwitchState ? '\n' : ', ';
+    final buffer = StringBuffer();
+
+    for (int i = 0; i < counter; i++) {
+      buffer.write(inputText);
+      if (i < counter - 1) {
+        buffer.write(separator);
+      }
+    }
+    return buffer.toString().trimRight();
+  }
+
+  Future<void> copyTextButton() async {
+    final String copy = _buildShareText();
+    if (copy.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context).snackbar_empty_text ??
+              'Нечего копировать'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    copytextIconBtnSwitchState = false;
+
+    await Clipboard.setData(ClipboardData(text: copy));
+
+    context.scaffoldMessenger.showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context).snackbar_text)),
+    );
+
+    timerDebouncingClicks?.cancel();
+    timerDebouncingClicks = Timer(const Duration(milliseconds: 1500), () {
+      if (mounted) setState(() => copytextIconBtnSwitchState = true);
+    });
+  }
+
+  Future<void> shareOptionIcon() async {
+    final String str = _buildShareText();
+    if (str.isEmpty) {
+      _showEmptySnackBar();
+      return;
+    }
+
+    final int estimatedBytes = (str.length * 2.5).toInt();
+    if (estimatedBytes > 550000) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Текст слишком большой для шаринга (${counter} повторений).\n'
+            'Используйте кнопку «Копировать».',
+          ),
+          duration: const Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+          action:
+              SnackBarAction(label: 'Копировать', onPressed: copyTextButton),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await Share.share(str);
+    } catch (e) {
+      debugPrint('Share error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Не удалось открыть окно шаринга')),
+      );
+    }
+  }
+
+  void _showEmptySnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context).snackbar_empty_text ??
+            'Нечего поделиться'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   void onTap() {
@@ -87,96 +269,28 @@ class _TextRepeaterState extends State<TextRepeater> {
     counter = 0;
   }
 
-  @override
-  void dispose() {
-    _bottomBannerAd.dispose();
-    controller.dispose();
-    controller2.dispose();
-    timerDebouncingClicks?.cancel();
-    super.dispose();
-  }
-
-  Future<void> copyTextButton() async {
-    String copy = '';
-    copytextIconBtnSwitchState = false;
-
-    for (var element in listShareGeneratedText) {
-      if (checkboxSwitchState == false) {
-        copy += '$element, ';
-      } else {
-        copy += '$element\n';
-      }
-    }
-    await Clipboard.setData(ClipboardData(text: copy)).then((value) {
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
-      return context.scaffoldMessenger
-          .showSnackBar(SnackBar(content: Text(S.of(context).snackbar_text)));
-    });
-    timerDebouncingClicks = Timer(const Duration(milliseconds: 1500),
-        () => copytextIconBtnSwitchState = true);
-  }
-
-  Future<void> shareOptionIcon() async {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    String str = '';
-    for (var element in listShareGeneratedText) {
-      if (checkboxSwitchState == false) {
-        str += '$element, ';
-      } else {
-        str += '$element\n';
-      }
-    }
-    await Share.share(str);
-  }
-
-  Text textLineBreak() {
-    listShareGeneratedText.add(controller.text);
-    return Text(
-      '${controller.text}$lineBreakGeneratedText'.trim(),
-      style: Styles.textTheme(context).bodyLarge,
-    );
-  }
-
-  Text textNoLineBreak() {
-    listShareGeneratedText.add(controller.text);
-    return Text(
-      controller.text,
-      style: Styles.textTheme(context).bodyLarge,
-    );
-  }
-
-  //! BUILD
+  // ==================== BUILD ====================
   @override
   Widget build(BuildContext context) {
-    //! SCAFFOLD
     return Scaffold(
-      bottomNavigationBar: _isBottomBannerAdLoaded
-          ? SizedBox(
-              height: _bottomBannerAd.size.height.toDouble(),
-              width: _bottomBannerAd.size.width.toDouble(),
-              child: AdWidget(ad: _bottomBannerAd),
-            )
-          : null,
       drawer: const CustomDrawer(),
-      onDrawerChanged: (value) {
-        if (value) {
-          setState(() => _isBottomBannerAdLoaded = false);
+      onDrawerChanged: (isOpened) {
+        if (isOpened) {
+          setState(() => _isMainBannerAdLoaded = false);
         } else {
-          setState(() {
-            _bottomBannerAd.load();
-            _isBottomBannerAdLoaded = true;
-          });
+          setState(() => _isMainBannerAdLoaded =
+              true); // просто показываем уже загруженный баннер
         }
       },
       backgroundColor: context.theme.colorScheme.background,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
-          S.of(context).app_title,
+          AppLocalizations.of(context).app_title,
           softWrap: true,
           maxLines: 2,
         ),
-        actions: const <Widget>[
+        actions: const [
           LocaleLanguageSwitcherWidget(),
           PopupMenu(),
         ],
@@ -186,58 +300,33 @@ class _TextRepeaterState extends State<TextRepeater> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               TextFormField(
-                //! TEXT FIELD
                 minLines: 1,
                 maxLines: 4,
-                onChanged: (newState) {
-                  setState(() {
-                    if (controller.text.trim().isNotEmpty &&
-                        controller2.text.trim().isNotEmpty) {
-                      elevatedGenerateTextBtnSwitchState = true;
-                    } else {
-                      elevatedGenerateTextBtnSwitchState = false;
-                      copytextIconBtnSwitchState = false;
-                      sharedIconBtnSwitchState = false;
-                    }
-                    listShareGeneratedText.clear();
-                  });
-                },
                 decoration: InputDecoration(
-                    labelText: S.of(context).label_text1,
-                    labelStyle: Styles.textTheme(context).labelMedium),
+                  labelText: AppLocalizations.of(context).label_text1,
+                  labelStyle: Styles.textTheme(context).labelMedium,
+                ),
                 controller: controller,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 style: Styles.textTheme(context).bodyLarge,
               ),
               TextFormField(
-                //! COUNTER FIELD
-                onChanged: (newState) {
-                  setState(() {
-                    if (controller.text.trim().isNotEmpty &&
-                        controller2.text.trim().isNotEmpty) {
-                      elevatedGenerateTextBtnSwitchState = true;
-                    } else {
-                      elevatedGenerateTextBtnSwitchState = false;
-                      copytextIconBtnSwitchState = false;
-                      sharedIconBtnSwitchState = false;
-                    }
-                  });
-                  counter = 0;
-                },
                 decoration: InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: S.of(context).label_text2,
-                    labelStyle: Styles.textTheme(context).labelMedium),
+                  border: const UnderlineInputBorder(),
+                  labelText: AppLocalizations.of(context).label_text2,
+                  labelStyle: Styles.textTheme(context).labelMedium,
+                ),
                 keyboardType: TextInputType.number,
                 controller: controller2,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0}')),
                   FilteringTextInputFormatter.deny(RegExp('[. ,-]')),
                   LengthLimitingTextInputFormatter(4),
-                  NumericalRangeFormatter(min: 1, max: 1000),
+                  NumericalRangeFormatter(
+                      min: 1, max: 2000), // можешь поднять до 4000-5000
                 ],
                 style: Styles.textTheme(context).bodyLarge,
               ),
@@ -245,119 +334,119 @@ class _TextRepeaterState extends State<TextRepeater> {
               Row(
                 children: [
                   Expanded(
-                    //! CHECKBOX
                     child: CheckboxNewline(
-                        label: Text(
-                          S.of(context).checkbox_title,
-                          style: Styles.textTheme(context).labelMedium,
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        value: timeDilation != 1.0,
-                        onChanged: (bool newLine) {
-                          setState(() {
-                            timeDilation = newLine ? 2.5 : 1.0;
-                            listShareGeneratedText.clear();
-                            checkboxSwitchState = newLine;
-                          });
-                        }),
+                      label: Text(
+                        AppLocalizations.of(context).checkbox_title,
+                        style: Styles.textTheme(context).labelMedium,
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      value: checkboxSwitchState,
+                      onChanged: (bool newLine) {
+                        setState(() {
+                          timeDilation = newLine ? 2.5 : 1.0;
+                          checkboxSwitchState = newLine;
+                          listShareGeneratedText.clear();
+                        });
+                      },
+                    ),
                   ),
                   Container(
-                    //! MAX 1000 STRING
                     decoration: BoxDecoration(
-                        color: context.color.danger,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10))),
+                      color: context.color.danger,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
                     padding: const EdgeInsets.all(4),
-                    child: Text(S.of(context).text_max1000,
-                        style: Styles.textTheme(context).bodySmall),
+                    child: Text(
+                      AppLocalizations.of(context).text_max1000,
+                      style: Styles.textTheme(context).bodySmall,
+                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
+              _buildBanner(),
               const SizedBox(height: 10),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                        //! GENERATE BUTTON
-                        onPressed: elevatedGenerateTextBtnSwitchState
-                            ? () {
-                                copytextIconBtnSwitchState = true;
-                                sharedIconBtnSwitchState = true;
-                                setState(() {});
-                                counter = int.tryParse(controller2.text) ?? 0;
-                                listShareGeneratedText.clear();
-                              }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                            textStyle: Styles.textTheme(context).headlineSmall,
-                            elevation: 5.0),
-                        child: Text(
-                          S.of(context).elevated_btn_generate,
-                        )),
+                      onPressed: elevatedGenerateTextBtnSwitchState
+                          ? () {
+                              _showInterstitialIfNeeded();
+                              listShareGeneratedText.clear();
+                              copytextIconBtnSwitchState = true;
+                              sharedIconBtnSwitchState = true;
+                              counter = int.tryParse(controller2.text) ?? 0;
+                              setState(() {});
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        textStyle: Styles.textTheme(context).headlineSmall,
+                        elevation: 5,
+                      ),
+                      child: Text(
+                          AppLocalizations.of(context).elevated_btn_generate),
+                    ),
                     ElevatedButton(
-                        //! RESET BUTTON
-                        onPressed: () {
-                          setState(() {
-                            onTap();
-                            copytextIconBtnSwitchState = false;
-                            sharedIconBtnSwitchState = false;
-                            elevatedGenerateTextBtnSwitchState = false;
-                            checkboxSwitchState = false;
-                            timeDilation = 1.0;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                            textStyle: Styles.textTheme(context).headlineSmall,
-                            elevation: 5.0),
-                        child: Text(S.of(context).elevated_btn_reset)),
-                    Ink(
-                      //! COPY ICONBUTTON
-                      decoration: const ShapeDecoration(shape: CircleBorder()),
-                      child: IconButton(
-                          onPressed: () {
-                            copytextIconBtnSwitchState
-                                ? copyTextButton()
-                                : null;
-                          },
-                          tooltip: S.of(context).tooltip_copy,
-                          icon: const Icon(
-                            Icons.copy,
-                          )),
+                      onPressed: () {
+                        setState(() {
+                          onTap();
+                          copytextIconBtnSwitchState = false;
+                          sharedIconBtnSwitchState = false;
+                          elevatedGenerateTextBtnSwitchState = false;
+                          checkboxSwitchState = false;
+                          timeDilation = 1.0;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        textStyle: Styles.textTheme(context).headlineSmall,
+                        elevation: 5,
+                      ),
+                      child:
+                          Text(AppLocalizations.of(context).elevated_btn_reset),
                     ),
                     Ink(
-                      //! SHARE ICONBUTTON
                       decoration: const ShapeDecoration(shape: CircleBorder()),
                       child: IconButton(
-                          onPressed: () => sharedIconBtnSwitchState
-                              ? shareOptionIcon()
-                              : null,
-                          tooltip: S.of(context).tooltip_share,
-                          icon: const Icon(
-                            Icons.share_rounded,
-                          )),
+                        onPressed:
+                            copytextIconBtnSwitchState ? copyTextButton : null,
+                        tooltip: AppLocalizations.of(context).tooltip_copy,
+                        icon: const Icon(Icons.copy),
+                      ),
+                    ),
+                    Ink(
+                      decoration: const ShapeDecoration(shape: CircleBorder()),
+                      child: IconButton(
+                        onPressed:
+                            sharedIconBtnSwitchState ? shareOptionIcon : null,
+                        tooltip: AppLocalizations.of(context).tooltip_share,
+                        icon: const Icon(Icons.share_rounded),
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 10),
               Expanded(
-                //! RESULT GENERATE
                 child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5.0),
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: counter > 0
-                        ? checkboxSwitchState
-                            ? ListView.builder(
-                                itemCount: counter,
-                                itemBuilder: (context, index) =>
-                                    textLineBreak())
-                            : ListView.builder(
-                                itemCount: counter,
-                                itemBuilder: (context, index) =>
-                                    textNoLineBreak())
-                        : const Text('No items')),
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: counter > 0
+                      ? ListView.builder(
+                          itemCount: counter,
+                          addAutomaticKeepAlives: false,
+                          itemExtent: 28, // сильно ускоряет скролл
+                          itemBuilder: (context, index) {
+                            final text = controller.text;
+                            return checkboxSwitchState
+                                ? Text('${text}\n'.trim(),
+                                    style: Styles.textTheme(context).bodyLarge)
+                                : Text(text,
+                                    style: Styles.textTheme(context).bodyLarge);
+                          },
+                        )
+                      : const Center(child: Text('No items')),
+                ),
               ),
             ],
           ),

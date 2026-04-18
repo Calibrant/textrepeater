@@ -31,15 +31,15 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "com.example.text_repeater"
     compileSdk flutter.compileSdkVersion
-    ndkVersion "27.0.12077973"
+    ndkVersion "28.2.13676358"
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '21'
     }
 
     sourceSets {
@@ -50,9 +50,9 @@ android {
         applicationId "com.fantazey.text_repeater"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        minSdkVersion localProperties.getProperty('flutter.minSdkVersion').toInteger()
+        minSdkVersion 24
         targetSdkVersion 35
-        compileSdkVersion 35
+        compileSdkVersion 36
     }
 
     signingConfigs {
@@ -77,5 +77,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-ads:22.6.0'
+    implementation 'com.google.android.gms:play-services-ads:25.1.0'
 }

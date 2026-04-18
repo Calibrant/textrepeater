@@ -5,7 +5,7 @@
     "label_text1": "텍스트 입력",
     "label_text2": "텍스트를 몇 번 반복합니까?",
     "checkbox_title": "새 줄 만들기",
-    "text_max1000": "최대 1000줄",
+    "text_max1000": "최대 2000줄",
     "elevated_btn_generate": "텍스트 생성",
     "Elevated_BTN_Reset": "리셋",
     "tooltip_copy": "복사",

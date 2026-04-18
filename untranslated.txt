@@ -1,0 +1,89 @@
+{
+  "de": [
+    "app_title",
+    "snackbar_empty_text"
+  ],
+
+  "de_DE": [
+    "app_title",
+    "pageSettingsInputLanguage",
+    "snackbar_empty_text"
+  ],
+
+  "es": [
+    "drawer_header",
+    "drawer_title_rate",
+    "drawer_title_privacy",
+    "snackbar_empty_text"
+  ],
+
+  "es_ES": [
+    "drawer_header",
+    "drawer_title_rate",
+    "drawer_title_privacy",
+    "pageSettingsInputLanguage",
+    "snackbar_empty_text"
+  ],
+
+  "fr": [
+    "snackbar_empty_text"
+  ],
+
+  "id": [
+    "drawer_header",
+    "drawer_title_rate",
+    "drawer_title_privacy",
+    "snackbar_empty_text"
+  ],
+
+  "id_ID": [
+    "drawer_header",
+    "drawer_title_rate",
+    "drawer_title_privacy",
+    "pageSettingsInputLanguage",
+    "snackbar_empty_text"
+  ],
+
+  "ja": [
+    "snackbar_empty_text"
+  ],
+
+  "ko": [
+    "elevated_btn_reset",
+    "snackbar_empty_text"
+  ],
+
+  "ko_KR": [
+    "elevated_btn_reset",
+    "pageSettingsInputLanguage",
+    "snackbar_empty_text"
+  ],
+
+  "pt": [
+    "snackbar_empty_text"
+  ],
+
+  "pt_BR": [
+    "pageSettingsInputLanguage",
+    "snackbar_empty_text"
+  ],
+
+  "pt_PT": [
+    "pageSettingsInputLanguage",
+    "snackbar_empty_text"
+  ],
+
+  "ru": [
+    "drawer_header",
+    "drawer_title_rate",
+    "drawer_title_privacy"
+  ],
+
+  "ru_RU": [
+    "drawer_header",
+    "drawer_title_rate",
+    "drawer_title_privacy",
+    "pageSettingsInputLanguage",
+    "snackbar_empty_text"
+  ]
+}

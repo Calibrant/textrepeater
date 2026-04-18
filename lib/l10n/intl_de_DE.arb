@@ -5,7 +5,7 @@
     "label_text1": "Geben Sie Ihren Text ein",
     "label_text2": "Wie oft soll der Text wiederholt werden?",
     "checkbox_title": "Neue Zeile erstellen",
-    "text_max1000": "max 1000 Zeilen",
+    "text_max1000": "max 2000 Zeilen",
     "elevated_btn_generate": "Text generieren",
     "elevated_btn_reset": "Zurücksetzen",
     "tooltip_copy": "Kopieren",
