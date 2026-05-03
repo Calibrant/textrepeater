@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:text_repeater/l10n/app_localizations.dart';
-import 'package:text_repeater/main.dart';
 import 'package:text_repeater/text_repeater.dart';
 import 'core/constants.dart';
 import 'core/launch_url.dart';
@@ -28,7 +27,8 @@ class CustomDrawer extends StatelessWidget {
               )),
           ListTile(
             leading: const Icon(Icons.touch_app, color: Colors.blue),
-            title: Text(AppLocalizations.of(context).drawer_title_rate), //thumb_up
+            title:
+                Text(AppLocalizations.of(context).drawer_title_rate), //thumb_up
             onTap: () {
               const googlePlay = LaunchUrl();
               googlePlay.openURL(AppConst.googlePlay);
@@ -44,7 +44,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           const ListTile(
             leading: Icon(Icons.verified, color: Colors.blue),
-            title: Text('version 2.1.1'),
+            title: Text('version 3.0.0'),
           ),
         ],
       ),

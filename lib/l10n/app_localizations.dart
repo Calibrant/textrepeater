@@ -128,14 +128,8 @@ abstract class AppLocalizations {
   /// No description provided for @app_title.
   ///
   /// In en, this message translates to:
-  /// **'Add Text, Repeat, Copy and Share!'**
+  /// **'Text Repeater'**
   String get app_title;
-
-  /// No description provided for @snackbar_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Text copied'**
-  String get snackbar_text;
 
   /// No description provided for @label_text1.
   ///
@@ -146,7 +140,7 @@ abstract class AppLocalizations {
   /// No description provided for @label_text2.
   ///
   /// In en, this message translates to:
-  /// **'How many times repeat the text?'**
+  /// **'How many times to repeat the text?'**
   String get label_text2;
 
   /// No description provided for @checkbox_title.
@@ -154,12 +148,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create new line'**
   String get checkbox_title;
-
-  /// No description provided for @text_max1000.
-  ///
-  /// In en, this message translates to:
-  /// **'max 2000 lines'**
-  String get text_max1000;
 
   /// No description provided for @elevated_btn_generate.
   ///
@@ -185,6 +173,114 @@ abstract class AppLocalizations {
   /// **'Share'**
   String get tooltip_share;
 
+  /// No description provided for @snackbar_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Text copied to clipboard!'**
+  String get snackbar_text;
+
+  /// No description provided for @snackbar_empty_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to copy or share'**
+  String get snackbar_empty_text;
+
+  /// No description provided for @max_limit_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {max}'**
+  String max_limit_text(Object max);
+
+  /// No description provided for @premium_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Text Repeater PRO'**
+  String get premium_title;
+
+  /// No description provided for @premium_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What you\'ll get:'**
+  String get premium_subtitle;
+
+  /// No description provided for @premium_feature_no_ads.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete removal of all ads'**
+  String get premium_feature_no_ads;
+
+  /// No description provided for @premium_feature_unlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 100,000 repetitions at once'**
+  String get premium_feature_unlimited;
+
+  /// No description provided for @premium_feature_support.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority support'**
+  String get premium_feature_support;
+
+  /// No description provided for @premium_one_time.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time purchase — forever!'**
+  String get premium_one_time;
+
+  /// No description provided for @premium_button_buy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy PRO — \$3.99'**
+  String get premium_button_buy;
+
+  /// No description provided for @premium_button_later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get premium_button_later;
+
+  /// No description provided for @share_file_name.
+  ///
+  /// In en, this message translates to:
+  /// **'repeated_text'**
+  String get share_file_name;
+
+  /// No description provided for @share_too_large.
+  ///
+  /// In en, this message translates to:
+  /// **'Text is too large for direct sharing.\nUse \"Copy\" instead.'**
+  String get share_too_large;
+
+  /// No description provided for @share_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share'**
+  String get share_error;
+
+  /// No description provided for @copy_limit_exceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Copying is available only up to {max} lines.\nUse \"Share\" for larger texts.'**
+  String copy_limit_exceeded(Object max);
+
+  /// No description provided for @copy_too_large.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to copy text'**
+  String get copy_too_large;
+
+  /// No description provided for @limit_free.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 2000'**
+  String get limit_free;
+
+  /// No description provided for @limit_premium.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 100000'**
+  String get limit_premium;
+
   /// No description provided for @drawer_header.
   ///
   /// In en, this message translates to:
@@ -206,14 +302,26 @@ abstract class AppLocalizations {
   /// No description provided for @pageSettingsInputLanguage.
   ///
   /// In en, this message translates to:
-  /// **'{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}'**
+  /// **'{locale, select, en {English} fr {French} es {Spanish} de {German} id {Indonesian} ko {Korean} pt {Portuguese} ru {Russian} ja {Japanese} other {Unknown}}'**
   String pageSettingsInputLanguage(String locale);
 
-  /// No description provided for @snackbar_empty_text.
+  /// No description provided for @repetitions_text.
   ///
   /// In en, this message translates to:
-  /// **'There is nothing to copy'**
-  String get snackbar_empty_text;
+  /// **'repetitions of text'**
+  String get repetitions_text;
+
+  /// No description provided for @purchase_next_update.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase will be available in the next update.'**
+  String get purchase_next_update;
+
+  /// No description provided for @no_items.
+  ///
+  /// In en, this message translates to:
+  /// **'No items'**
+  String get no_items;
 }
 
 class _AppLocalizationsDelegate

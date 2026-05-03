@@ -1,19 +1,35 @@
 {
     "main_title": "Add Text, Repeat, Copy and Share!",
-    "app_title": "Add Text, Repeat, Copy and Share!",
-    "snackbar_text": "Text copied",
+    "app_title": "Text Repeater",
     "label_text1": "Enter your text",
-    "label_text2": "How many times repeat the text?",
+    "label_text2": "How many times to repeat the text?",
     "checkbox_title": "Create new line",
-    "text_max1000": "max 2000 lines",
     "elevated_btn_generate": "Generate Text",
     "elevated_btn_reset": "Reset",
     "tooltip_copy": "Copy",
     "tooltip_share": "Share",
+    "snackbar_text": "Text copied to clipboard!",
+    "snackbar_empty_text": "Nothing to copy or share",
+    "max_limit_text": "Up to {max}",
+    "premium_title": "Text Repeater PRO",
+    "premium_subtitle": "What you'll get:",
+    "premium_feature_no_ads": "Complete removal of all ads",
+    "premium_feature_unlimited": "Up to 100,000 repetitions at once",
+    "premium_feature_support": "Priority support",
+    "premium_one_time": "One-time purchase — forever!",
+    "premium_button_buy": "Buy PRO — $3.99",
+    "premium_button_later": "Later",
+    "share_file_name": "repeated_text",
+    "share_too_large": "Text is too large for direct sharing.\nUse \"Copy\" instead.",
+    "share_error": "Failed to share",
+    "copy_limit_exceeded": "Copying is available only up to {max} lines.\nUse \"Share\" for larger texts.",
+    "copy_too_large": "Failed to copy text",
+    "limit_free": "Up to 2000",
+    "limit_premium": "Up to 100000",
     "drawer_header": "Text repeater app",
     "drawer_title_rate": "Rate this app",
     "drawer_title_privacy": "Privacy Policy",
-    "pageSettingsInputLanguage": "{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}",
+    "pageSettingsInputLanguage": "{locale, select, en {English} fr {French} es {Spanish} de {German} id {Indonesian} ko {Korean} pt {Portuguese} ru {Russian} ja {Japanese} other {Unknown}}",
     "@pageSettingsInputLanguage": {
         "placeholders": {
             "locale": {
@@ -21,5 +37,7 @@
             }
         }
     },
-    "snackbar_empty_text": "There is nothing to copy"
+    "repetitions_text": "repetitions of text",
+    "purchase_next_update": "Purchase will be available in the next update.",
+    "no_items": "No items"
 }

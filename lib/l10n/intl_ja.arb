@@ -1,24 +1,36 @@
 {
-    "main_title": "テキストを追加、リピート、コピー、共有！",
-    "app_title": "テキストの追加、リピート、コピー、共有！",
-    "snackbar_text": "コピーしたテキスト",
+    "main_title": "テキストを追加、繰り返し、コピー、共有！",
+    "app_title": "Text Repeater",
     "label_text1": "テキストを入力",
     "label_text2": "テキストを何回繰り返しますか？",
     "checkbox_title": "新しい行を作成",
-    "text_max1000": "最大2000行",
-    "elevated_btn_generate": "テキストの生成",
+    "elevated_btn_generate": "テキストを生成",
     "elevated_btn_reset": "リセット",
     "tooltip_copy": "コピー",
     "tooltip_share": "共有",
-    "drawer_header": "テキストリピーターアプリ",
-    "drawer_title_rate": "このアプリを評価する",
+    "snackbar_text": "テキストをクリップボードにコピーしました！",
+    "snackbar_empty_text": "コピーまたは共有するものがありません",
+    "max_limit_text": "最大 {max}",
+    "premium_title": "Text Repeater PRO",
+    "premium_subtitle": "得られる機能：",
+    "premium_feature_no_ads": "すべての広告を完全に削除",
+    "premium_feature_unlimited": "一度に最大100,000回繰り返し",
+    "premium_feature_support": "優先サポート",
+    "premium_one_time": "一度の購入で永久に！",
+    "premium_button_buy": "PROを購入 — $3.99",
+    "premium_button_later": "後で",
+    "share_file_name": "repeated_text",
+    "share_too_large": "テキストが長すぎて直接共有できません。\n代わりに「コピー」を使用してください。",
+    "share_error": "共有に失敗しました",
+    "copy_limit_exceeded": "{max}行までしかコピーできません。\n長いテキストは「共有」を使用してください。",
+    "copy_too_large": "テキストのコピーに失敗しました",
+    "limit_free": "最大2000",
+    "limit_premium": "最大100000",
+    "drawer_header": "Text Repeater アプリ",
+    "drawer_title_rate": "このアプリを評価",
     "drawer_title_privacy": "プライバシーポリシー",
-    "pageSettingsInputLanguage": "{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}",
-    "@pageSettingsInputLanguage": {
-        "placeholders": {
-            "locale": {
-                "type": "String"
-            }
-        }
-    }
+    "pageSettingsInputLanguage": "{locale, select, en {英語} fr {フランス語} es {スペイン語} de {ドイツ語} id {インドネシア語} ko {韓国語} pt {ポルトガル語} ru {ロシア語} ja {日本語} other {その他}}",
+    "repetitions_text": "回のテキスト繰り返し",
+    "purchase_next_update": "購入は次のアップデートで利用可能になります。",
+    "no_items": "項目なし"
 }

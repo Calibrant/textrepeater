@@ -3,7 +3,7 @@ description: Text repeater. Just Add text, Repeat & Share
 
 publish_to: 'none'
 
-version: 2.1.1+10 #02.07.25 17.09.24
+version: 3.0.1+12 #24.04.26   02.07.25
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -24,6 +24,8 @@ dependencies:
   google_mobile_ads: ^7.0.0
   in_app_purchase: ^3.2.3
   shared_preferences: ^2.5.5
+  in_app_review: ^2.0.11
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

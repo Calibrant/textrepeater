@@ -1,24 +1,36 @@
 {
-    "main_title": "Wiederholer-Text",
-    "app_ttle": "Wiederholungstext",
-    "snackbar_text": "Kopierter Text",
-    "label_text1": "Geben Sie Ihren Text ein",
+    "main_title": "Text hinzufügen, wiederholen, kopieren und teilen!",
+    "app_title": "Text Repeater",
+    "label_text1": "Gib deinen Text ein",
     "label_text2": "Wie oft soll der Text wiederholt werden?",
     "checkbox_title": "Neue Zeile erstellen",
-    "text_max1000": "max 2000 Zeilen",
-    "elevated_btn_generate": "Text gener.",
+    "elevated_btn_generate": "Text generieren",
     "elevated_btn_reset": "Zurücksetzen",
     "tooltip_copy": "Kopieren",
     "tooltip_share": "Teilen",
-    "drawer_header": "Wiederholungstext",
-    "drawer_title_rate": "Diese Anwendung bewerten",
-    "drawer_title_privacy": "Datenschutzrichtlinie",
-    "pageSettingsInputLanguage": "{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}",
-    "@pageSettingsInputLanguage": {
-        "placeholders": {
-            "locale": {
-                "type": "String"
-            }
-        }
-    }
+    "snackbar_text": "Text in die Zwischenablage kopiert!",
+    "snackbar_empty_text": "Nichts zum Kopieren oder Teilen",
+    "max_limit_text": "Bis zu {max}",
+    "premium_title": "Text Repeater PRO",
+    "premium_subtitle": "Was du erhältst:",
+    "premium_feature_no_ads": "Vollständige Entfernung aller Werbung",
+    "premium_feature_unlimited": "Bis zu 100.000 Wiederholungen auf einmal",
+    "premium_feature_support": "Priorisierte Unterstützung",
+    "premium_one_time": "Einmaliger Kauf — für immer!",
+    "premium_button_buy": "PRO kaufen — 3,99 $",
+    "premium_button_later": "Später",
+    "share_file_name": "wiederholter_text",
+    "share_too_large": "Der Text ist zu groß zum direkten Teilen.\nVerwende stattdessen \"Kopieren\".",
+    "share_error": "Teilen fehlgeschlagen",
+    "copy_limit_exceeded": "Kopieren ist nur bis zu {max} Zeilen möglich.\nVerwende \"Teilen\" für längere Texte.",
+    "copy_too_large": "Text konnte nicht kopiert werden",
+    "limit_free": "Bis zu 2000",
+    "limit_premium": "Bis zu 100000",
+    "drawer_header": "Text Repeater App",
+    "drawer_title_rate": "App bewerten",
+    "drawer_title_privacy": "Datenschutzerklärung",
+    "pageSettingsInputLanguage": "{locale, select, en {Englisch} fr {Französisch} es {Spanisch} de {Deutsch} id {Indonesisch} ko {Koreanisch} pt {Portugiesisch} ru {Russisch} ja {Japanisch} other {Unbekannt}}",
+    "repetitions_text": "Wiederholungen des Textes",
+    "purchase_next_update": "Der Kauf wird im nächsten Update verfügbar sein.",
+    "no_items": "Keine Einträge"
 }

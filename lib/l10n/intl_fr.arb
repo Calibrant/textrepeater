@@ -1,24 +1,36 @@
 {
-    "main_title": "Ajouter du texte, répéter, copier et partager!",
-    "app_title": "Ajouter du texte, répéter, copier et partager!",
-    "snackbar_text": "Texte copié",
+    "main_title": "Ajouter du texte, répéter, copier et partager !",
+    "app_title": "Text Repeater",
     "label_text1": "Entrez votre texte",
-    "label_text2": "Combien de fois répéter le texte?",
+    "label_text2": "Combien de fois répéter le texte ?",
     "checkbox_title": "Créer une nouvelle ligne",
-    "text_max1000": "2000 lignes maximum",
-    "elevated_btn_generate": "Générer du texte",
-    "elevated_btn_reset": "Reset",
+    "elevated_btn_generate": "Générer le texte",
+    "elevated_btn_reset": "Réinitialiser",
     "tooltip_copy": "Copier",
     "tooltip_share": "Partager",
-    "drawer_header": "Text repeater app",
-    "drawer_title_rate": "Notez cette application",
+    "snackbar_text": "Texte copié dans le presse-papiers !",
+    "snackbar_empty_text": "Rien à copier ou partager",
+    "max_limit_text": "Jusqu'à {max}",
+    "premium_title": "Text Repeater PRO",
+    "premium_subtitle": "Ce que vous obtiendrez :",
+    "premium_feature_no_ads": "Suppression complète de toutes les publicités",
+    "premium_feature_unlimited": "Jusqu'à 100 000 répétitions à la fois",
+    "premium_feature_support": "Support prioritaire",
+    "premium_one_time": "Achat unique — pour toujours !",
+    "premium_button_buy": "Acheter PRO — 3,99 $",
+    "premium_button_later": "Plus tard",
+    "share_file_name": "texte_repeté",
+    "share_too_large": "Le texte est trop long pour un partage direct.\nUtilisez \"Copier\" à la place.",
+    "share_error": "Échec du partage",
+    "copy_limit_exceeded": "La copie est disponible uniquement jusqu'à {max} lignes.\nUtilisez \"Partager\" pour les textes plus longs.",
+    "copy_too_large": "Impossible de copier le texte",
+    "limit_free": "Jusqu'à 2000",
+    "limit_premium": "Jusqu'à 100000",
+    "drawer_header": "Application Text Repeater",
+    "drawer_title_rate": "Évaluer cette application",
     "drawer_title_privacy": "Politique de confidentialité",
-    "pageSettingsInputLanguage": "{locale, select, en {English} fr {Français} es {Español} de {Deutsch} id {Bahasa\nIndonesia} ko {한국어} ms {Melayu} pt {Português} ru {Русский} ja {日本語} other {-}}",
-    "@pageSettingsInputLanguage": {
-        "placeholders": {
-            "locale": {
-                "type": "String"
-            }
-        }
-    }
+    "pageSettingsInputLanguage": "{locale, select, en {Anglais} fr {Français} es {Espagnol} de {Allemand} id {Indonésien} ko {Coréen} pt {Portugais} ru {Russe} ja {Japonais} other {Inconnu}}",
+    "repetitions_text": "répétitions du texte",
+    "purchase_next_update": "L'achat sera disponible dans la prochaine mise à jour.",
+    "no_items": "Aucun élément"
 }

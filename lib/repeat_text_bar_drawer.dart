@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:text_repeater/l10n/app_localizations.dart';
-import 'package:text_repeater/main.dart';
 import 'package:text_repeater/text_repeater.dart';
 import 'repeater_text_app_core/constants.dart';
 import 'repeater_text_app_core/text_repeater_launch_url.dart';
